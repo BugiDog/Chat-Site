@@ -13,7 +13,7 @@ function App() {
   return (
     <div >
        <div>
-          <Welcome  />
+         { !ChatRoomData && <Welcome  />}
        </div>
        <div>
          {!!ChatRoomData && <ChatRoom ChatRoomData={ChatRoomData}/>}
