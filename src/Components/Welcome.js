@@ -22,10 +22,10 @@ function Welcome() {
 
 
   return (
-    <div >
-      <div>
-        <input type='text' placeholder='Введите имя' onInput={inputChange} />
-        <button onClick={buttonClick}>Зайти в чат</button>
+    <div className="Welcome-page">
+      <div className="Welcome-page__input-feld">
+        <input className="Welcome-page__input" type='text' placeholder='Введите имя' onInput={inputChange} />
+        <button className="Welcome-page__button" onClick={buttonClick}>Зайти в чат</button>
       </div>
     </div>
   );

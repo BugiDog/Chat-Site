@@ -2,6 +2,7 @@ import React from 'react';
 import Welcome from './Components/Welcome'
 import ChatRoom from './Components/ChatRoom'
 import {useSocket} from './socket'
+import './Styles/Main.scss'
 
 
 function App() {
