@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client'
 
 const socket = io(`http://localhost:5000`)
@@ -7,10 +7,11 @@ export const useSocket = () => {
     const [ChatRoomData, setChatRoomData] = useState(null)
     const [newUser, setNewUser] = useState('')
     const [newMessage, setNewMessage] = useState('')
+    //const setVaultRoomId = useRef(null)
 
     useEffect(() => {
 
-        socket.on('newError', error =>{
+        socket.on('newError', error => {
             alert(error.message)
         })
 
@@ -18,24 +19,24 @@ export const useSocket = () => {
             setChatRoomData(data)
         })
 
-        socket.on('newUser',(userName)=>{
-            setNewUser(userName)      
+        socket.on('newUser', (userName) => {
+            setNewUser(userName)
         })
-        
-        socket.on('newMessage',({message})=>{
+
+        socket.on('newMessage', ({ message }) => {
             setNewMessage(message)
         })
 
     }, [])
 
     const joinChatRoom = (userName, roomId) => {
-        socket.emit('joinChatRoom',{userName, roomId})
+        socket.emit('joinChatRoom', { userName, roomId })
     }
     const createChatRoom = (name) => {
-        socket.emit('createChatRoom',name)
+        socket.emit('createChatRoom', name)
     }
-    const sendMessage = (textMessage,roomId) =>{
-        socket.emit('sendMessage',{textMessage,roomId})
+    const sendMessage = (textMessage, roomId) => {
+        socket.emit('sendMessage', { textMessage, roomId })
     }
 
     return {
