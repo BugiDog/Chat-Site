@@ -1,24 +1,25 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import { useSocket } from '../socket'
 
 
-function Welcome() {
-  const roomId = useRef(false)
+function Welcome({ RoomID }) {
+  console.log('RoomIDWelcome', RoomID);
   const name = useRef('')
   const { joinChatRoom, createChatRoom } = useSocket()
+  const history = useHistory()
 
   useEffect(() => {
-    const url = decodeURIComponent(window.location.href)
-    const index = url.indexOf('roomID=')
-    if (index != -1) {
-      roomId.current = url.substring(index + 7)
-      console.log('roomId= ', roomId.current);
+    if (!!name && !!RoomID) {
+      console.log('WelcomeuseEffect', name, RoomID);
+      history.push(`/ChatRoom/?roomID=${RoomID}`)
     }
-  }, [])
+
+  }, [name, RoomID])
 
   const inputChange = event => name.current = event.target.value
 
-  const buttonClick = () => roomId.current ? joinChatRoom(name.current, roomId.current) : createChatRoom(name.current)
+  const buttonClick = () => !!RoomID ? joinChatRoom(name.current, RoomID) : createChatRoom(name.current)
 
 
   return (
