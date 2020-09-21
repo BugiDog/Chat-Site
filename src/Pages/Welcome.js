@@ -10,7 +10,7 @@ function Welcome() {
   const { ChatRoomData,joinChatRoom, createChatRoom, reconnectToRoom} = useSocket()
   const history = useHistory()
 
-  useEffect(() => {
+  useEffect(() => {                                             // определяет реконект или вход по ссылке
     const url = decodeURIComponent(window.location.href)
     if (sessionStorage.getItem('userId')) {
       reconnectToRoom(sessionStorage.getItem('userId'))
@@ -19,7 +19,7 @@ function Welcome() {
     }
   },[])
 
-  useEffect(() => {
+  useEffect(() => {                                               // ждет данных с сервера ,и переадресовывает
     if (ChatRoomData) {
       console.log('useEffectWelcome', name, ChatRoomData.roomId);
       history.replace(`/ChatRoom/?roomID=${ChatRoomData.roomId}`)

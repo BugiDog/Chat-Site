@@ -2,33 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { useSocket } from '../socket'
 import { useHistory } from 'react-router-dom'
 
-function ChatRoom({ChatRoomData}) {
+function ChatRoom({ ChatRoomData }) {
     console.log('ChatRoom');
-    const {newUser, newMessage,userDisconnect, sendMessage, disconnectUser} = useSocket()
+    const { newUser, newMessage, userDisconnect, sendMessage, disconnectUser } = useSocket()
     const [textMessage, setTextMessage] = useState('')
     const [usersNames, setUsersNames] = useState(ChatRoomData.usersNames)
     const [messages, setMessages] = useState(ChatRoomData.messages)
     const history = useHistory()
-    
-    useEffect(() => {
+
+    useEffect(() => {                                   // добавляет имя нового пользователя в список
         if (newUser) {
             setUsersNames(prev => [...prev, newUser])
         }
     }, [newUser])
 
-    useEffect(() => {
+    useEffect(() => {                                   // добавляет новое сообщение
         if (newMessage) {
             setMessages(prev => [...prev, newMessage])
         }
     }, [newMessage])
-    
-    useEffect(() => {
+
+    useEffect(() => {                                   // убирает имя отключившегося пользователя из списка
         if (userDisconnect) {
-            setUsersNames(prev => {
-                return prev.splice(prev.indexOf(userDisconnect),1)
-            })
+            setUsersNames(prev => prev.splice(prev.indexOf(userDisconnect), 1)
+            )
         }
-    },[userDisconnect])
+    }, [userDisconnect])
 
     const inputChange = event => setTextMessage(event.target.value)
 
@@ -38,7 +37,7 @@ function ChatRoom({ChatRoomData}) {
     }
 
     const exitButton = () => {
-        disconnectUser(sessionStorage.getItem('userId'),ChatRoomData.roomId)
+        disconnectUser(sessionStorage.getItem('userId'), ChatRoomData.roomId)
         sessionStorage.removeItem('userId')
         history.replace(`/`)
 
@@ -48,11 +47,12 @@ function ChatRoom({ChatRoomData}) {
     return (
         <div className="Chat-room">
             <div className="Chat-room__side-bar">
-                <div className="Chat-room__ID-room">{`Id комнаты:${ChatRoomData.roomId}`}</div>
+                <div className="Chat-room__ID-room">{`Id комнаты: ${ChatRoomData.roomId}`}</div>
                 <div className="Chat-room__users-list">
+                    <div>Список пользователей:</div>
                     <ul>
                         {usersNames.map((name) =>
-                            <li key={name + ChatRoomData.roomId}>{name}</li>
+                            <li className="Chat-room__users-item" key={name + ChatRoomData.roomId}>{name}</li>
                         )}
                     </ul>
                 </div>
@@ -61,7 +61,14 @@ function ChatRoom({ChatRoomData}) {
             <div className="Chat-room__chat">
                 <div className="Chat-room__text-feld">
                     <ul className="Chat-room__message-list">
-                        {messages.map((item) => <li>{`${item.date}   ${item.userName}     ${item.textMessage} `} </li>)
+                        {messages.map((item) => <li 
+                        className="Chat-room__message" 
+                        key={item.date + item.userName} >
+                            <div>{item.date} </div>
+                            <div>{item.userName} </div>
+                            <div>{item.textMessage} </div>
+                            
+                        </li>)
 
                         }
                     </ul>
