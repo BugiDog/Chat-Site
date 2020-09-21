@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,27 +7,21 @@ import {
 } from "react-router-dom";
 import Welcome from './Pages/Welcome'
 import ChatRoom from './Pages/ChatRoom'
-import { useSocket } from './socket'
 import './Styles/Main.scss'
-
+import { useSocket } from './socket'
 
 function App() {
-
-  const { ChatRoomData } = useSocket()
-
-  console.log('ChatRoomDataAPP', ChatRoomData);
+  console.log('App');
+   const {ChatRoomData} = useSocket()
 
   return (
     <Router >
       <Switch>
         <Route path="/Welcome"  >
-          <Welcome RoomID={!!ChatRoomData ? ChatRoomData.roomId : 0} />
+        <Welcome />
         </Route>
         <Route path="/ChatRoom">
-          {ChatRoomData ? <ChatRoom ChatRoomData={ChatRoomData} /> :
-            <Welcome RoomID={decodeURIComponent(window.location.href).substring(decodeURIComponent(window.location.href).indexOf('roomID=') + 7)
-            } />
-          }
+          { ChatRoomData ? <ChatRoom ChatRoomData={ChatRoomData} /> : <Welcome/>}
         </Route>
         <Redirect from='/' to='/Welcome' />
       </Switch>
